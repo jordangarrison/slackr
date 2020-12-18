@@ -1,0 +1,33 @@
+{
+  "name": "slackr",
+  "version": "1.0.0",
+  "description": "CLI interface for slack interactions",
+  "main": "./bin/slackr",
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --pretty --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "slack",
+    "cli",
+    "nodejs",
+    "typescript"
+  ],
+  "author": "Jordan Garrison",
+  "license": "MIT",
+  "dependencies": {
+    "@slack/web-api": "^5.14.0",
+    "dotenv": "^8.2.0",
+    "enquirer": "^2.3.6",
+    "esm": "^3.2.25",
+    "humanize-ms": "^1.2.1",
+    "yargs": "^16.2.0"
+  },
+  "devDependencies": {
+    "@types/dotenv": "^8.2.0",
+    "@types/humanize-ms": "^1.2.0",
+    "@types/yargs": "^15.0.12",
+    "typescript": "^4.1.3"
+  }
+}
