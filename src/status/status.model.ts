@@ -1,6 +1,6 @@
 export type InputStatus = {
   emoji?: string
-  message: string
+  status: string
   time?: string
 }
 

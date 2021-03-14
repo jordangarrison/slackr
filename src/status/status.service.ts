@@ -6,10 +6,10 @@ import { UsersProfileSetArguments } from '@slack/web-api'
 export const setStatus = async (status: InputStatus) => {
   const slackStatus: SlackStatus = {
     status_emoji: status.emoji,
-    status_text: status.message,
-    status_expiration:
-      status.time != undefined ? calculateExpiration(status.time) : undefined
+    status_text: status.status,
+    status_expiration: status.time != undefined ? calculateExpiration(status.time) : undefined
   }
+  console.log(slackStatus)
   const statusPayload: UsersProfileSetArguments = {
     profile: JSON.stringify(slackStatus)
   }
