@@ -1,6 +1,6 @@
 import ms from 'humanize-ms'
 import { InputStatus, SlackStatus } from './status.model'
-import { slackWebClient } from './../util/slack.util'
+import slack from '../util/slack.util'
 import { UsersProfileSetArguments } from '@slack/web-api'
 
 export const setStatus = async (status: InputStatus) => {
@@ -13,7 +13,7 @@ export const setStatus = async (status: InputStatus) => {
   const statusPayload: UsersProfileSetArguments = {
     profile: JSON.stringify(slackStatus)
   }
-  return await slackWebClient.users.profile.set(statusPayload)
+  return await slack.client.users.profile.set(statusPayload)
 }
 
 const calculateExpiration = (time: string) => {
@@ -24,4 +24,8 @@ const calculateExpiration = (time: string) => {
 
 const convertToMs = (duration: string) => {
   return ms(duration)
+}
+
+export default {
+  setStatus
 }
