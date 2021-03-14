@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --pretty --watch",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "slackr:status": "./bin/slackr status"
   },
   "keywords": [
     "slack",
@@ -17,7 +18,7 @@
   "author": "Jordan Garrison",
   "license": "MIT",
   "dependencies": {
-    "@slack/web-api": "^5.14.0",
+    "@slack/web-api": "^6.1.0",
     "dotenv": "^8.2.0",
     "enquirer": "^2.3.6",
     "esm": "^3.2.25",

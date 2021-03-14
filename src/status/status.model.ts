@@ -1,11 +1,11 @@
 export type InputStatus = {
-  emoji: string
+  emoji?: string
   message: string
-  time: string
+  time?: string
 }
 
 export type SlackStatus = {
   status_text: string
-  status_emoji: string
-  status_expiration: number
+  status_emoji?: string
+  status_expiration?: number
 }

@@ -7,20 +7,24 @@ export const setStatus = async (status: InputStatus) => {
   const slackStatus: SlackStatus = {
     status_emoji: status.emoji,
     status_text: status.message,
-    status_expiration: calculateExpiration(status.time)
+    status_expiration:
+      status.time != undefined ? calculateExpiration(status.time) : undefined
   }
   const statusPayload: UsersProfileSetArguments = {
     profile: JSON.stringify(slackStatus)
   }
-  slackWebClient.users.profile.set(statusPayload)
+  return await slackWebClient.users.profile.set(statusPayload)
 }
 
 const calculateExpiration = (time: string) => {
-  const milis = convertToMilis(time)
-  const currentDate = Date.now()
-  return currentDate + milis
+  console.debug(time)
+  const milliseconds = convertToMs(time)
+  console.debug(milliseconds)
+  const currentDate = Math.round(Date.now())
+  console.debug(currentDate)
+  return Math.floor((currentDate + milliseconds) / 1000)
 }
 
-const convertToMilis = (duration: string) => {
+const convertToMs = (duration: string) => {
   return ms(duration)
 }
