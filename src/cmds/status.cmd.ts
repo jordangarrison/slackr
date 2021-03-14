@@ -1,6 +1,6 @@
 import { InputStatus } from './../status/status.model'
 import { statusQuestion } from './../questions'
-import * as statusService from '../status/status.service'
+import statusService from '../status/status.service'
 import { Argv } from 'yargs'
 
 type statusArgs = {

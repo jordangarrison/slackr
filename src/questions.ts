@@ -1,5 +1,7 @@
-import { InputStatus } from './status/status.model'
+import config from './config'
 import { prompt } from 'enquirer'
+import { InputStatus } from './status/status.model'
+import { InputStandup } from './standup/standup.model'
 
 export const statusQuestion = async () => {
   const form = {
@@ -14,4 +16,25 @@ export const statusQuestion = async () => {
   }
   const response = await prompt(form)
   return response['status'] as InputStatus
+}
+
+export const standupQuestion = async () => {
+  const form = {
+    type: 'form',
+    name: 'standup',
+    message: 'Please enter your daily standup',
+    choices: [
+      { name: 'yesterday', message: 'Yesterday', initial: 'N/A' },
+      { name: 'today', message: 'Today', initial: 'What are you going to do today?' },
+      { name: 'blockers', message: 'Blockers', initial: 'N/A' },
+      { name: 'channel', message: 'Channel to send', initial: config.channel }
+    ]
+  }
+  const response = await prompt(form)
+  return response['standup'] as InputStandup
+}
+
+export default {
+  statusQuestion,
+  standupQuestion
 }
