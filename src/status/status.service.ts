@@ -9,7 +9,7 @@ export const setStatus = async (status: InputStatus) => {
     status_text: status.status,
     status_expiration: status.time != undefined ? calculateExpiration(status.time) : undefined
   }
-  console.log(slackStatus)
+  console.debug(slackStatus)
   const statusPayload: UsersProfileSetArguments = {
     profile: JSON.stringify(slackStatus)
   }
@@ -17,11 +17,8 @@ export const setStatus = async (status: InputStatus) => {
 }
 
 const calculateExpiration = (time: string) => {
-  console.debug(time)
   const milliseconds = convertToMs(time)
-  console.debug(milliseconds)
   const currentDate = Math.round(Date.now())
-  console.debug(currentDate)
   return Math.floor((currentDate + milliseconds) / 1000)
 }
 
