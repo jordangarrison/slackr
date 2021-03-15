@@ -9,9 +9,10 @@
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --pretty --watch",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublish": "npm run build",
     "slackr:status": "./bin/slackr status",
-    "slackr:standup": "./bin/slackr standup"
+    "slackr:standup": "./bin/slackr standup",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "slackr",
