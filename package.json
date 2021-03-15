@@ -1,6 +1,6 @@
 {
   "name": "slackr-cli",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "CLI interface for slack interactions",
   "main": "./bin/slackr",
   "bin": {
@@ -9,7 +9,7 @@
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --pretty --watch",
-    "prepublish": "npm run build",
+    "prepare": "npm run build",
     "slackr:status": "./bin/slackr status",
     "slackr:standup": "./bin/slackr standup",
     "test": "echo \"Error: no test specified\" && exit 1"
