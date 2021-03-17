@@ -51,7 +51,7 @@ export const findChannel = async (channel: string) => {
     })
     if (result.channels) {
       const channels: Channel[] = result.channels as Channel[]
-      return _.find(channels, c => c.name === channel)
+      return _(channels).find(c => c.name === channel)
     } else {
       throw new Error(`Channel ${channel} not found`)
     }
