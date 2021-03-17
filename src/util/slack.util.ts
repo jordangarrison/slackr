@@ -1,42 +1,7 @@
 import config from '../config'
 import { WebClient } from '@slack/web-api'
+import { Channel, ChannelType } from './slack.model'
 import _ from 'lodash'
-
-export interface Channel {
-  id: string
-  name: string
-  is_channel: boolean
-  is_group: boolean
-  is_im: boolean
-  created: number
-  is_archived: boolean
-  is_general: boolean
-  unlinked: number
-  name_normalized: string
-  is_shared: boolean
-  is_frozen: boolean
-  parent_conversation?: null
-  creator: string
-  is_ext_shared: boolean
-  is_org_shared: boolean
-  shared_team_ids: string[]
-  pending_shared: any[]
-  pending_connected_team_ids: any[]
-  is_pending_ext_shared: boolean
-  is_member: boolean
-  is_private: boolean
-  is_mpim: boolean
-  topic: Purpose
-  purpose: Purpose
-  previous_names: any[]
-  num_members: number
-}
-
-export interface Purpose {
-  value: string
-  creator: string
-  last_set: number
-}
 
 const token = config.token
 if (!token) {
@@ -44,17 +9,44 @@ if (!token) {
 }
 export const client = new WebClient(config.token)
 
-export const findChannel = async (channel: string) => {
+const getPaginatedChannels = async (
+  types: ChannelType[],
+  limit = 1000,
+  finalResults: Channel[] = [],
+  cursor?: string
+) => {
+  const result = await client.conversations.list({
+    types: _(types).join(','),
+    exclude_archived: true,
+    cursor,
+    limit
+  })
+  if (result.channels) {
+    finalResults.push(...(result.channels as Channel[]))
+  } else {
+    throw new Error('Cannot list Channels')
+  }
+  if (result.response_metadata && result.response_metadata.next_cursor) {
+    await getPaginatedChannels(types, limit, finalResults, result.response_metadata.next_cursor)
+  }
+  return finalResults
+}
+
+export const findChannel = async (channel: string, types?: ChannelType[], limit = 1000) => {
+  const channels: Channel[] = await listChannels(types, limit)
+  const foundChannel = _.find(channels, c => c.name === channel)
+  if (!foundChannel) {
+    throw new Error(`Cannot find channel ${channel}`)
+  }
+  return foundChannel
+}
+
+export const listChannels = async (types?: ChannelType[], limit = 1000) => {
+  if (!types) {
+    types = ['private_channel', 'public_channel']
+  }
   try {
-    const result = await client.conversations.list({
-      types: 'public_channel,private_channel,im,mpim'
-    })
-    if (result.channels) {
-      const channels: Channel[] = result.channels as Channel[]
-      return _(channels).find(c => c.name === channel)
-    } else {
-      throw new Error(`Channel ${channel} not found`)
-    }
+    return await getPaginatedChannels(types, limit)
   } catch (err) {
     throw err
   }
@@ -62,5 +54,6 @@ export const findChannel = async (channel: string) => {
 
 export default {
   client,
-  findChannel
+  findChannel,
+  listChannels
 }

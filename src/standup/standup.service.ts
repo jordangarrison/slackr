@@ -76,6 +76,8 @@ export const sendStandup = async (standup: InputStandup) => {
       blocks: slackStandup,
       text: ''
     })
+  } else {
+    console.log(`Cannot find channel ${channel}`)
   }
 }
 
