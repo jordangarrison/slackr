@@ -1,6 +1,6 @@
 {
   "name": "slackr-cli",
-  "version": "0.1.0",
+  "version": "0.1.0-alpha2",
   "description": "CLI interface for slack interactions",
   "main": "./bin/slackr",
   "bin": {
@@ -8,13 +8,15 @@
   },
   "scripts": {
     "build": "tsc",
+    "build:clean": "run-s clean build",
     "build:watch": "tsc --pretty --watch",
+    "clean": "rm -rf ./dist tsconfig.buildinfo",
     "docker:build": "docker build --pull --rm --file Dockerfile --tag docker.pkg.github.com/jordangarrison/slackr/slackr:latest --tag docker.pkg.github.com/jordangarrison/slackr/slackr:$npm_package_version .",
     "docker:publish": "run-p docker:publish:latest docker:publish:version",
     "docker:publish:latest": "docker push docker.pkg.github.com/jordangarrison/slackr/slackr:latest",
     "docker:publish:version": "docker push docker.pkg.github.com/jordangarrison/slackr/slackr:$npm_package_version",
     "docker:release": "run-s docker:build docker:publish",
-    "prepare": "run-p build docker:release",
+    "prepare": "run-p build:clean docker:release",
     "slackr:status": "./bin/slackr status",
     "slackr:standup": "./bin/slackr standup",
     "test": "echo \"Error: no test specified\" && exit 1"
