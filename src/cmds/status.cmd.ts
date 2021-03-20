@@ -1,9 +1,12 @@
-import { InputStatus } from './../status/status.model'
-import { statusQuestion } from './../questions'
+import { SlackerArgs } from '../index'
+import cosmic from '../cosmic'
+import { InputStatus } from '../status/status.model'
+import { statusQuestion } from '../questions'
 import statusService from '../status/status.service'
 import { Argv } from 'yargs'
+import _ from 'lodash'
 
-type statusArgs = {
+type statusArgs = SlackerArgs & {
   message: string
   emoji: string
   time: string
@@ -39,5 +42,9 @@ exports.handler = async (argv: statusArgs) => {
         console.error(err)
         process.exit(1)
       })
-  await statusService.setStatus(status).catch(err => console.error(err))
+  const configFile = argv.config
+  const config = await cosmic.initConfig(configFile)
+  _(config.workspaces).forEach(async workspace => {
+    await statusService.setStatus(status, workspace).catch(err => console.error(err))
+  })
 }

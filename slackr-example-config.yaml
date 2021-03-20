@@ -1,0 +1,11 @@
+workspaces:
+- org: slack-workspace1
+  type: slack
+  token: 'xoxs-example-token'
+  channel: my-channel-private
+  standup: true
+  default: true
+- org: slack-workspace2
+  type: slack
+  token: 'xoxs-example-token'
+  channel: my-other-channel-public

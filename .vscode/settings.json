@@ -3,6 +3,7 @@
         "cmds",
         "mpim",
         "mrkdwn",
-        "slackr"
+        "slackr",
+        "slackrrc"
     ]
 }

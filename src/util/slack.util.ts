@@ -1,13 +1,8 @@
-import config from '../config'
 import { WebClient } from '@slack/web-api'
 import { Channel, ChannelType } from './slack.model'
 import _ from 'lodash'
 
-const token = config.token
-if (!token) {
-  throw Error('No slack token given')
-}
-export const client = new WebClient(config.token)
+export const client = new WebClient()
 
 const getPaginatedChannels = async (
   types: ChannelType[],

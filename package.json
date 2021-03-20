@@ -1,6 +1,6 @@
 {
   "name": "slackr-cli",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "description": "CLI interface for slack interactions",
   "main": "./bin/slackr",
   "bin": {
@@ -39,7 +39,7 @@
   "license": "MIT",
   "dependencies": {
     "@slack/web-api": "^6.1.0",
-    "convict": "^6.0.1",
+    "cosmiconfig": "^7.0.0",
     "dotenv": "^8.2.0",
     "enquirer": "^2.3.6",
     "esm": "^3.2.25",
@@ -49,7 +49,6 @@
     "yargs": "^16.2.0"
   },
   "devDependencies": {
-    "@types/convict": "^6.0.1",
     "@types/dotenv": "^8.2.0",
     "@types/humanize-ms": "^1.2.0",
     "@types/js-yaml": "^4.0.0",
