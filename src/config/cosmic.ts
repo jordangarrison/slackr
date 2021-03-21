@@ -1,24 +1,13 @@
 import { cosmiconfig } from 'cosmiconfig'
+import { SlackrConfig } from './config.model'
 import _ from 'lodash'
 
 const moduleName = 'slackr'
 const searchPath = ['~/.slackrrc', '~/.slackr.yaml', '.slackr.yaml']
 
-export type Workspace = {
-  org: String
-  type: 'slack' | 'discord' | 'teams'
-  channel: String
-  standup?: Boolean
-  default?: Boolean
-}
-
-export type SlackrConfig = {
-  workspaces: Workspace[]
-}
-
-export const initConfig = async (filepath?: string) => {
-  if (filepath) {
-    searchPath.push(filepath)
+export const initConfig = async (filepaths?: string[]) => {
+  if (filepaths) {
+    searchPath.push(..._(filepaths).compact().value())
   }
   const explorer = cosmiconfig(moduleName, {
     searchPlaces: searchPath
