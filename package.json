@@ -16,7 +16,8 @@
     "docker:publish:latest": "docker push docker.pkg.github.com/jordangarrison/slackr/slackr:latest",
     "docker:publish:version": "docker push docker.pkg.github.com/jordangarrison/slackr/slackr:$npm_package_version",
     "docker:release": "run-s docker:build docker:publish",
-    "prepare": "run-p build:clean docker:release",
+    "prepare": "npm run build:clean",
+    "prepublishOnly": "npm run docker:release",
     "slackr:status": "./bin/slackr status",
     "slackr:standup": "./bin/slackr standup",
     "test": "echo \"Error: no test specified\" && exit 1"
