@@ -1,12 +1,41 @@
-import { InputStatus } from './../status/status.model'
-import { statusQuestion } from './../questions'
+import { Workspace } from './../config/config.model'
+import { SlackerArgs } from '../index'
+import config from '../config'
+import { InputStatus } from '../status/status.model'
+import { statusQuestion } from '../questions'
 import statusService from '../status/status.service'
 import { Argv } from 'yargs'
+import _ from 'lodash'
 
-type statusArgs = {
+type statusArgs = SlackerArgs & {
   message: string
   emoji: string
   time: string
+}
+
+const getCliConfig = (argv: statusArgs) => {
+  if (argv.workspace && argv.type && argv.channel && argv.token) {
+    return {
+      org: argv.workspace,
+      type: argv.type,
+      token: argv.workspace,
+      channel: argv.workspace,
+      standup: true,
+      default: true
+    } as Workspace
+  }
+  return undefined
+  // return _.pickBy<Workspace>(
+  //   {
+  //     org: argv.workspace,
+  //     type: argv.type,
+  //     token: argv.workspace,
+  //     channel: argv.workspace,
+  //     standup: true,
+  //     default: true
+  //   },
+  //   _.identity
+  // )
 }
 
 exports.command = 'status [message]'
@@ -39,5 +68,12 @@ exports.handler = async (argv: statusArgs) => {
         console.error(err)
         process.exit(1)
       })
-  await statusService.setStatus(status).catch(err => console.error(err))
+  const configFile = argv.config
+  const cfg = await config.init(configFile)
+  const cliConfig = getCliConfig(argv)
+  const finalConfig = cliConfig ? config.merge(cfg, cliConfig) : cfg
+
+  _(finalConfig.workspaces).forEach(async workspace => {
+    await statusService.setStatus(status, workspace).catch(err => console.error(err))
+  })
 }

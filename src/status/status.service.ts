@@ -3,7 +3,7 @@ import { InputStatus, SlackStatus } from './status.model'
 import slack from '../util/slack.util'
 import { UsersProfileSetArguments } from '@slack/web-api'
 
-export const setStatus = async (status: InputStatus) => {
+export const setStatusSlack = async (status: InputStatus, config: any) => {
   const slackStatus: SlackStatus = {
     status_emoji: status.emoji,
     status_text: status.status,
@@ -11,7 +11,8 @@ export const setStatus = async (status: InputStatus) => {
   }
   console.debug(slackStatus)
   const statusPayload: UsersProfileSetArguments = {
-    profile: JSON.stringify(slackStatus)
+    profile: JSON.stringify(slackStatus),
+    token: config.token
   }
   return await slack.client.users.profile.set(statusPayload)
 }
@@ -24,6 +25,15 @@ const calculateExpiration = (time: string) => {
 
 const convertToMs = (duration: string) => {
   return ms(duration)
+}
+
+const setStatus = async (status: InputStatus, config: any) => {
+  if (config && config.type) {
+    switch (config.type) {
+      case 'slack':
+        await setStatusSlack(status, config)
+    }
+  }
 }
 
 export default {
